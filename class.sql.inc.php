@@ -2,11 +2,11 @@
 #MySQL Klasse zur 'einfachen' MySQL Datenbankabfrage in php
 
 function destroy($target)		{	#Objekt aus Speicher loeschen
-$$target="NULL";
-unset($$target);	
+	$$target="NULL";
+	unset($$target);	
 }
 
-class verbindung				{	#Baut Datenbankverbindung auf und fuehrt Queries durch
+class verbindung			{	#Baut Datenbankverbindung auf und fuehrt Queries durch
 	#Benoetigte Variablen:
 	var $my_db_user;#MySQL user
 	var $my_db_pass;#MySQL passwort
@@ -24,7 +24,8 @@ class verbindung				{	#Baut Datenbankverbindung auf und fuehrt Queries durch
 	# Verbindungs Funktionen - Datenbankverbindung aufbauen / abbauen
 	#
 	#function aufbauen($host=$this->my_db_host,$user=$this->my_db_user,$passwd=$this->my_db_pass,$db=$this->my_db_db)		{	#funktioniert nich :(
-	function aufbauen($host="localhost",$user,$passwd="",$db="")		{	#Verbindung herstellen
+
+	function aufbauen($host="localhost",$user,$passwd="",$db="")		{	#Verbindung aufbauen
 		$this->my_db_host=$host;
 		$this->my_db_user=$user;
 		$this->my_db_pass=$passwd;
@@ -34,15 +35,15 @@ class verbindung				{	#Baut Datenbankverbindung auf und fuehrt Queries durch
 			#$debug_blog.='SQL \t connect \t hi!.\n';
 		mysql_select_db($this->my_db_db,$this->my_connection) or die('Datenbank futsch?<hr>'.mysql_error()."");
 			#$debug_blog.='SQL \t Datenbank \t gefunden.\n';
-		}
+	}
 	function trennen()		{	#Verbindung trennen
 			mysql_close($this->my_connection) or die('DB too close... ...?');
 				#$debug_blog.='SQL \t close \t bye.\n';
-		}
+	}
 	
 	# Abfragefunktionen
 	#
-	function fragen($frage)	{	# Fuehrt die Abfrage durch
+	function fragen($frage)		{	#Fuehrt die Abfrage durch
 		$this->frage=$frage;
 		#$debug_blog. "<hr>abfrage: ".$this->frage."<hr>";
 		$this->cache=mysql_query($this->frage) or die("W A S  willst du? ... ".mysql_error()."");
@@ -52,12 +53,12 @@ class verbindung				{	#Baut Datenbankverbindung auf und fuehrt Queries durch
 		while($tmp = mysql_fetch_array($this->cache)){ #das abfrageergebnis wird in einem zweidimensionalen array bereitgestellt in der form: antwort[Zeilennummer][Spaltennummer]
 			for($spalte=0; $spalte<count($tmp)/2; $spalte++) {#^^warum bekommt die count funktion den doppelten wert raus? werden unterarrays mitgezählt? komisch. erstmal mit /2 gefixt.
 				$this->antwort[$zeile][$spalte]=$tmp[$spalte];
-				}
+			}
 			$zeile++;
-			} 
+		} 
 		#$debug_blog.='SQL \t query \t ok.\n';
 		return $this->antwort[0][0];
-		}
+	}
 	
 	# Funktionen ohne Rueckgabewerte ausfuehren
 	#	
@@ -65,9 +66,9 @@ class verbindung				{	#Baut Datenbankverbindung auf und fuehrt Queries durch
 		$this->frage=$frage;
 		#$debug_blog.="<hr>Abfrage: ".$this->frage."<hr>";
 		mysql_query($this->frage) or die("Verstopfung ... ".mysql_error()."");
-		}
+	}
 	
-	}# Ende Klassendefinition "Verbindung"
+}# Ende Klassendefinition "Verbindung"
 
 class abfrage extends verbindung {	#Erstellt SQL Abfrage 	
 	#Verfuegbare Variblen
@@ -114,7 +115,7 @@ class abfrage extends verbindung {	#Erstellt SQL Abfrage
 		$this->frage.=";";
 		#$debug_bog.="Abfrage: ".$this->frage."<hr>";
 		return verbindung::fragen($this->frage);
-		}
+	}
 	function machneu($tabelle, $spalte="", $value="")	{ #Neuen Datensatz anlegen
 		$this->my_tabelle=$tabelle;
 		$this->my_spalte=$spalte;
